@@ -23,6 +23,18 @@ def generate_all_known_tickers():
         f.write("Tickers count: {count}\n".format(count=tickersFound) ) 
         f.write(str(namesFound))
 
+# from SEP
+# sicsector
+# sicindustry
+# sector
+# industry
+# famaindustry
+# scalemarket
+# Hybrid: sector, scalemarket
+# sep
+# ^^
+# for each company value - Mean (of all columns) and value - Median .... 
+
 def filterDimensions(csvpath:str, newcsv:str, features:List):
     '''
     Take a set of features you want to keep and isolate those.
@@ -49,35 +61,14 @@ def filterMatch(csvpath:str, newcsv:str, feature:str, match:str):
         writeHeader = False
 
 if __name__ == "__main__":
-    # Examples of Options dimension reduction
-    # Depends on problem, but the principle is to keep fields with low covariance.
-    # Correlated fields don't need to be redundantly included.
-    # Sometimes even low correlation can imply dependence, so we would graph them first. 
-    # keep = ['Date',
-    # '\tPcrVolAll',
-    # '\tPcrVol10',
-    # '\tPcrVol20',
-    # '\tPcrVol30',
-    # '\tPcrVol60',
-    # '\tPcrVol90',
-    # '\tPcrVol120',
-    # '\tPcrVol150',
-    # '\tPcrVol180',
-    # '\tPcrVol270',
-    # '\tPcrVol360',
-    # '\tPcrVol720',
-    # '\tPcrVol1080',
-    # '\tCallBreakeven10',
-    # '\tCallBreakeven20',
-    # '\tCallBreakeven30',
-    # '\tCallBreakeven60',
-    # '\tCallBreakeven90',
-    # '\tCallBreakeven120',
-    # '\tCallBreakeven150',
-    # '\tCallBreakeven180',
-    # '\tCallBreakeven270',
-    # '\tCallBreakeven360',
-    # '\tCallBreakeven720',
-    # '\tCallBreakeven1080']
-    # filterDimensions('data/1.csv','new_options',keep)
-    filterMatch('data/4.csv','onlyAAPL.csv','ticker','AAPL')
+        filterDimensions('SHARADAR_TICKERS_6cc728d11002ab9cb99aa8654a6b9f4e.csv','tickers_w_sicind-sicsect-ind-sect.csv',["ticker","sicsector", "sicindustry", "sector", "industry"])
+        s_sec = {}
+        s_ind = {}
+        sec = {}
+        ind = {}
+        chunksize = 20000
+        i=0
+        for chunk in pd.read_csv(csvpath, chunksize=chunksize, usecols=features):
+                print("Chunk",i)
+                i+=1
+                chunk.to_csv(newcsv, mode='a', index=False)
